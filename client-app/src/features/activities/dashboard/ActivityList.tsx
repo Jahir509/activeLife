@@ -7,6 +7,8 @@ interface Props{
     selectedActivity: Activity | undefined;
     selectActivity: (id:string)=> void;
     cancelSelectActivity: ()=> void;
+    deleteActivity: (id:string)=> void;
+
 }
 
 
@@ -18,13 +20,14 @@ export default function ActivityList(props:Props) {
                <Item key={activity.id}>
                     <Item.Content>
                         <Item.Header as='item-header'>{activity.title}</Item.Header>
-                        <Item.Meta>{activity.date.toString()}</Item.Meta>
+                        <Item.Meta>{activity.date}</Item.Meta>
                         <Item.Description>
                             <div>{activity.description}</div>
                             <div>{activity.city},{activity.venue}</div>
                         </Item.Description>
                         <Item.Extra>
                             <Button onClick={()=>props.selectActivity(activity.id)} floated='right' content='View' color='blue' />
+                            <Button onClick={()=>props.deleteActivity(activity.id)} floated='right' content='Delete' color='red' />
                             <Label basic content={activity.category} />
                         </Item.Extra>
                     </Item.Content>
