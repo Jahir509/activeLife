@@ -38,7 +38,7 @@ export default function ActivityList(props:Props) {
                             <Button 
                                 name={activity.id}
                                 loading={props.submitting && target === activity.id}
-                                onClick={()=>props.deleteActivity(activity.id)}
+                                onClick={(e)=>handleActivityDelete(e,activity.id)}
                                 floated='right'
                                 content='Delete'
                                 color='red' 
