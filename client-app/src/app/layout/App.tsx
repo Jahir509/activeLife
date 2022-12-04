@@ -5,25 +5,28 @@ import ActivityDashboard from '../../features/activities/dashboard/ActivityDashb
 import LoadingComponent from './LoadingComponent';
 import { useStore } from '../stores/store';
 import { observer } from 'mobx-react-lite';
+import { Route, useLocation } from 'react-router-dom';
+import Homepage from '../../features/home/Homepage';
+import ActivityForm from '../../features/activities/form/ActivityForm';
+import ActivityDetails from '../../features/activities/details/ActivityDetails';
 
 function App() {
 
-  // mobx
-  const {activityStore} = useStore();
-
-
-  useEffect(()=>{
-    activityStore.loadActivities();
-  },[activityStore])
-
-if(activityStore.loadingInitial) return <LoadingComponent inverted={true} content={'Loading App'} />
-
+  // for route track
+  const location = useLocation()
 
   return (
     <Fragment>
-      <NavBar />
+      {/* <NavBar />
       <Container style={{marginTop:'7rem'}}>
         <ActivityDashboard />
+      </Container> */}
+      <NavBar />
+      <Container style={{ marginTop: '7em' }}>
+          <Route exact path='/' component={Homepage}/>
+          <Route exact path='/activities' component={ActivityDashboard} />
+          <Route path='/activities/:id' component={ActivityDetails} />
+          <Route key={location.key} path={['/createActivity','/manage/:id']} component={ActivityForm} />
       </Container>
     </Fragment>
   );

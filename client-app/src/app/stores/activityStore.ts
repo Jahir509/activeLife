@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
 import { Activity } from "../../models/activity";
+import { isThisTypeNode } from "typescript";
 
 export default class ActivityStore {
     activityRegistry = new Map<string, Activity>();
@@ -24,8 +25,9 @@ export default class ActivityStore {
         try {
             const activities = await agent.Activities.list();
             activities.forEach(activity => {
-                activity.date = activity.date.split('T')[0];
-                this.activityRegistry.set(activity.id, activity);
+                this.setActivity(activity)
+                // activity.date = activity.date.split('T')[0];
+                // this.activityRegistry.set(activity.id, activity);
                 // this.activities.push(activity)
             })
             this.setLoadingInitial(false);
@@ -33,6 +35,37 @@ export default class ActivityStore {
             console.log(error);
             this.setLoadingInitial(false);
         }
+    }
+
+    loadActivity = async (id:string)=>{
+        let activity = this.getActivity(id)
+        if(activity){
+            this.selectedActivity = activity
+            return activity
+        }else{
+            this.loadingInitial = true;
+            try{
+                activity = await agent.Activities.details(id)
+                this.setActivity(activity)
+                runInAction(()=>{
+                    this.selectedActivity = activity
+                })
+                this.setLoadingInitial(false)
+                return activity
+            } catch(err){
+                console.log(err)
+                this.setLoadingInitial(false)
+            }
+        }
+    }
+
+    private setActivity = (activity:Activity)=>{
+        activity.date = activity.date.split('T')[0];
+        this.activityRegistry.set(activity.id,activity)
+    }
+
+    private getActivity = (id:string)=> {
+        return this.activityRegistry.get(id)
     }
 
     setLoadingInitial = (state: boolean) => {
@@ -104,7 +137,7 @@ export default class ActivityStore {
             runInAction(() => {
                 this.activityRegistry.delete(id);
                 // this.activities = [...this.activities.filter(x=>x.id !== id)]
-                if (this.selectedActivity?.id === id) this.cancelSelectedActivity();
+                // if (this.selectedActivity?.id === id) this.cancelSelectedActivity();
                 this.loading = false;
 
             })
