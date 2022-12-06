@@ -17,8 +17,9 @@ export default function NavBar () {
                 activeLife
             </Menu.Item>
             <Menu.Item as={NavLink} to='/activities' content='Activities' />
+            <Menu.Item as={NavLink} to='/errors' content='Errors' />
             <Menu.Item>
-                <Button as={NavLink} to='/createActivity' nClick={()=> activityStore.openForm()} positive content='Create new Activity' />
+                <Button as={NavLink} to='/createActivity' onClick={()=> activityStore.openForm()} positive content='Create new Activity' />
             </Menu.Item>
         </Container>
       </Menu>
