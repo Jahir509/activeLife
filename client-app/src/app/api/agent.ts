@@ -1,6 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+import { history } from "../..";
 import { Activity } from "../../models/activity";
+import { store, useStore } from "../stores/store";
 
 const sleep = (delay: number)=> {
     return new Promise((resolve)=>{
@@ -8,25 +10,44 @@ const sleep = (delay: number)=> {
     })
 }
 
+
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
 axios.interceptors.response.use(async response => {
         await sleep(1000);
         return response;
 },(error: AxiosError)=>{
-    const {data,status} = error.response!;
+    const {data,status,config}: {data:any,status:number,config:any} = error.response!;
     switch(status){
         case 400:
-            toast.error('bad request');
+            // toast.error('bad request');
+            if(typeof data === 'string'){
+                toast.error(data)
+            }
+            if(config.method === 'get' && data.errors.hasOwnProperty('id')){
+                history.push('/not-found')
+            }
+            if(data.errors){
+                const modelStateErrors = [];
+                for(const key in data.errors){
+                    if(data.errors[key]){
+                        modelStateErrors.push(data.errors[key])
+                    }
+                }
+            throw modelStateErrors.flat();
+            }
             break;
         case 401:
             toast.error('unauthorised');
             break;
         case 404:
-            toast.error('not found');
+            // toast.error('not found');
+            history.push('/not-found')
             break;
         case 500:
-            toast.error('srver error');
+            //toast.error('srver error');
+            store.commonStore.setServerError(data);
+            history.push('/server-error')
             break;
     }
     return Promise.reject(error);
