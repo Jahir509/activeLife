@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
@@ -21,7 +21,8 @@ namespace API.Controllers
             _userManager = userManager;
             _tokenService = tokenService;
         }
-
+    
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
@@ -33,17 +34,14 @@ namespace API.Controllers
 
             if(result)
             {
-                return new UserDto{
-                    DisplayName = user.DisplayName,
-                    Image = null,
-                    Token = _tokenService.CreateToken(user),
-                    UserName = user.UserName,
-                };
+                return CreateUserObject(user);
             }
 
             return Unauthorized();
         }
 
+
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
@@ -53,7 +51,7 @@ namespace API.Controllers
             }
             if(await _userManager.Users.AnyAsync(x=> x.Email == registerDto.Email))
             {
-                return BadRequest("Username is Already Taken");
+                return BadRequest("Email is Already Taken");
             }
             
             var user = new AppUser
@@ -67,6 +65,22 @@ namespace API.Controllers
 
             if(result.Succeeded)
             {
+                return CreateUserObject(user);
+            }
+
+            return BadRequest("Problem registering user");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        {
+            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            return CreateUserObject(user);
+        }
+
+        private UserDto CreateUserObject(AppUser user)
+        {
                 return new UserDto
                 {
                     UserName = user.UserName,
@@ -74,10 +88,6 @@ namespace API.Controllers
                     Token = _tokenService.CreateToken(user),
                     Image = null
                 };
-            }
-
-            return BadRequest("Problem registering user");
         }
-
     }
 }
