@@ -1,8 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
-import { history } from "../..";
 import { Activity } from "../../models/activity";
+import { User, UserFormValues } from "../../models/user";
 import { store, useStore } from "../stores/store";
+import {router} from "../../routes/Routes";
 
 const sleep = (delay: number)=> {
     return new Promise((resolve)=>{
@@ -12,6 +13,14 @@ const sleep = (delay: number)=> {
 
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
+
+const responseBody = <T> (response: AxiosResponse<T>)=> response.data;
+
+axios.interceptors.request.use(config => {
+    const token = store.commonStore.token
+    if(token && config.headers) config.headers.Authorization = `Bearer ${token}`
+    return config
+})
 
 axios.interceptors.response.use(async response => {
         await sleep(1000);
@@ -25,7 +34,7 @@ axios.interceptors.response.use(async response => {
                 toast.error(data)
             }
             if(config.method === 'get' && data.errors.hasOwnProperty('id')){
-                history.push('/not-found')
+               router.navigate('/not-found')
             }
             if(data.errors){
                 const modelStateErrors = [];
@@ -42,18 +51,17 @@ axios.interceptors.response.use(async response => {
             break;
         case 404:
             // toast.error('not found');
-            history.push('/not-found')
+           router.navigate('/not-found')
             break;
         case 500:
             //toast.error('srver error');
             store.commonStore.setServerError(data);
-            history.push('/server-error')
+           router.navigate('/server-error')
             break;
     }
     return Promise.reject(error);
 })
 
-const responseBody = <T> (response: AxiosResponse<T>)=> response.data;
 
 const request = {
     get:<T> (url:string)=> axios.get<T>(url).then(responseBody),
@@ -70,8 +78,16 @@ const Activities = {
     delete: (id:string)=> request.del<void>(`/activities/${id}`),
 }
 
+
+const Account = {
+    current: () => request.get<User>('account'),
+    login: (user: UserFormValues) => request.post<User>('/account/login', user),
+    register: (user: UserFormValues) => request.post<User>('/account/register', user)
+}
+
 const agent = {
-    Activities
+    Activities,
+    Account
 }
 
 

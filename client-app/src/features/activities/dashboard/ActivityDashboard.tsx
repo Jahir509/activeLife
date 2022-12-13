@@ -18,7 +18,7 @@ export default observer (
             if(activityRegistry.size <= 1 ) loadActivities();
         },[activityRegistry.size,loadActivities])
 
-        if(loadingInitial) return <LoadingComponent inverted={true} content={'Loading App'} />
+        if(loadingInitial) return <LoadingComponent inverted={true} content={'Loading Activities ...'} />
 
         return (
             <Grid>
