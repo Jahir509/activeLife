@@ -1,5 +1,7 @@
 using Application.Activities;
 using Application.core;
+using Application.Interfaces;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -28,6 +30,9 @@ namespace API.Extensions
 
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserAccessor,UserAccessor>();
 
 
             return services;
