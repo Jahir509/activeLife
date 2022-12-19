@@ -12,7 +12,7 @@ import InputTextArea from '../../../app/common/form/InputTextArea';
 import InputSelect from '../../../app/common/form/InputSelect';
 import { categoryOptions } from '../../../app/common/options/categoryOptions';
 import InputDate from '../../../app/common/form/InputDate';
-import { Activity } from '../../../models/activity';
+import { Activity, ActivityFormValues } from '../../../models/activity';
 
 
 
@@ -25,7 +25,7 @@ export default observer (
     const {activityStore} = useStore();
     const {loading,createActivity,updateActivity,loadActivity,loadingInitial} = activityStore
     const {id} = useParams<{id:string}>();
-    let blankObject = {id:'',title:'',category:'',date:null,city:'',venue:'',description:''}
+    // let blankObject = {id:'',title:'',category:'',date:null,city:'',venue:'',description:''}
     
     // const initialState = selectedActivity || blankObject
 
@@ -38,14 +38,14 @@ export default observer (
       venue: Yup.string().required('venue is Required')
     })
   
-    const [activity, setActivity] = useState<Activity>(blankObject);
+    const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
     useEffect(()=>{
       if(id) loadActivity(id).then((activity)=> setActivity(activity!))
     },[id,loadActivity])
   
-    function handleFormSubmit(activity: Activity){
-      if(activity.id.length === 0 ){
+    function handleFormSubmit(activity: ActivityFormValues){
+      if(!activity.id){
         let newActivity = {
           ...activity,
           id: uuid()
@@ -90,7 +90,7 @@ export default observer (
                   <InputText name="city" placeholder="City" />
                   <InputText name="venue" placeholder="Venue" />
                   <Button 
-                      loading={loading}
+                      loading={isSubmitting}
                       disabled={isSubmitting || !dirty || !isValid }
                       floated='right'
                       positive type='submit'
