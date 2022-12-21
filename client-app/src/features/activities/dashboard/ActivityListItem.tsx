@@ -15,9 +15,12 @@ export default function ActivityListItem({activity}:Props) {
     <>
         <Segment.Group>
             <Segment>
+                {activity.isCancelled && (
+                    <Label attached='top' style={{textAlign:'center'}} ribbon color='red' content='Cancelled' />
+                )}
                 <Item.Group>
                     <Item>
-                        <Item.Image size='tiny' circular src='/assets/user.jpg'></Item.Image>
+                        <Item.Image style={{marginBottom:3}} size='tiny' circular src='/assets/user.jpg'></Item.Image>
                         <Item.Content>
                             <Item.Header as={Link} to={`/activities/${activity.id}`}>
                                 {activity.title}

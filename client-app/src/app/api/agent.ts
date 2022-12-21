@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { Activity, ActivityFormValues } from "../../models/activity";
 import { User, UserFormValues } from "../../models/user";
-import { store, useStore } from "../stores/store";
+import { store } from "../stores/store";
 import {router} from "../../routes/Routes";
 
 const sleep = (delay: number)=> {

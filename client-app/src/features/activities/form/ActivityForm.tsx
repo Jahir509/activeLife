@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Header, Segment } from 'semantic-ui-react'
 import LoadingComponent from '../../../app/layout/LoadingComponent';
@@ -12,7 +12,7 @@ import InputTextArea from '../../../app/common/form/InputTextArea';
 import InputSelect from '../../../app/common/form/InputSelect';
 import { categoryOptions } from '../../../app/common/options/categoryOptions';
 import InputDate from '../../../app/common/form/InputDate';
-import { Activity, ActivityFormValues } from '../../../models/activity';
+import { ActivityFormValues } from '../../../models/activity';
 
 
 
@@ -23,7 +23,7 @@ export default observer (
 
     const navigate = useNavigate();
     const {activityStore} = useStore();
-    const {loading,createActivity,updateActivity,loadActivity,loadingInitial} = activityStore
+    const {createActivity,updateActivity,loadActivity,loadingInitial} = activityStore
     const {id} = useParams<{id:string}>();
     // let blankObject = {id:'',title:'',category:'',date:null,city:'',venue:'',description:''}
     
@@ -41,7 +41,7 @@ export default observer (
     const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
     useEffect(()=>{
-      if(id) loadActivity(id).then((activity)=> setActivity(activity!))
+      if(id) loadActivity(id).then((activity)=> setActivity(new ActivityFormValues(activity)))
     },[id,loadActivity])
   
     function handleFormSubmit(activity: ActivityFormValues){

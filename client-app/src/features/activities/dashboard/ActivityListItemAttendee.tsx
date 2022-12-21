@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Image,List } from 'semantic-ui-react'
+import { Image,List, Popup } from 'semantic-ui-react'
 import { Profile } from '../../../models/profile'
+import ProfileCard from '../../profiles/ProfileCard'
 
 
 interface Props {
@@ -13,9 +14,21 @@ export default function ActivityListItemAttendee({attendees}:Props) {
   return (
     <List horizontal>
         {attendees.map(attendee=>(
-            <List.Item key={attendee.userName} as={Link} to={`/profiles/${attendee.userName}`}>
-                <Image size='mini' circular src= {attendee.image || '/assets/user.jpg'} />
-            </List.Item>
+          <Popup
+              hoverable
+              key={attendee.userName}
+              trigger={
+                <List.Item as={Link} to={`/profile/${attendee.userName}`}>
+                    <Image size='mini'
+                          circular
+                          src={attendee.image || `/assets/user.jpg`} />
+                </List.Item>
+              }
+          >
+              <Popup.Content>
+                  <ProfileCard profile={attendee} />
+              </Popup.Content>
+          </Popup>
         ))}
     </List>
   )
