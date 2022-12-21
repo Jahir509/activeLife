@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.Profiles;
+using Application.Activities;
 
 namespace Application.DTO
 {
@@ -17,7 +13,6 @@ namespace Application.DTO
         public string Venue { get; set; }
         public string HostUserName { get; set; }
         public bool IsCancelled { get; set; }
-
-        public ICollection<Profile> Attendees {get; set;}
+        public ICollection<AttendeeDto> Attendees {get; set;}
     }
 }

@@ -1,6 +1,7 @@
 using Application.Activities;
 using Application.core;
 using Application.Interfaces;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,9 @@ namespace API.Extensions
 
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor,UserAccessor>();
+            services.AddScoped<IPhotoAccessor,PhotoAccessor>();
+
+            services.Configure<CloudinarySettings>(_config.GetSection("Cloudinary"));
 
 
             return services;
