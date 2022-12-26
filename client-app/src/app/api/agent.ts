@@ -4,6 +4,7 @@ import { Activity, ActivityFormValues } from "../../models/activity";
 import { User, UserFormValues } from "../../models/user";
 import { store } from "../stores/store";
 import {router} from "../../routes/Routes";
+import { Profile } from "../../models/profile";
 
 const sleep = (delay: number)=> {
     return new Promise((resolve)=>{
@@ -86,11 +87,16 @@ const Account = {
     register: (user: UserFormValues) => request.post<User>('/account/register', user)
 }
 
+const Profiles = {
+    get: (username:string) => request.get<Profile>(`/prodile/${username}`)
+}
+
 
 
 const agent = {
     Activities,
-    Account
+    Account,
+    Profiles,
 }
 
 

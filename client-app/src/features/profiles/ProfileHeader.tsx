@@ -7,7 +7,7 @@ interface Props {
     profile: Profile
 }
 
-export default observer(function ProfileHeader() {
+export default observer(function ProfileHeader({profile}:Props) {
     return (
         <Segment>
             <Grid>
@@ -22,8 +22,8 @@ export default observer(function ProfileHeader() {
                             />
                             <Item.Content verticalAlign='middle'>
                                 <Header as='h1' 
-                                // content={profile.displayName}
-                                content="ABCD"
+                                content={profile.displayName}
+                                //content="ABCD"
                                 />
                             </Item.Content>
                         </Item>
