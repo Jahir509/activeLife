@@ -5,6 +5,7 @@ import { User, UserFormValues } from "../../models/user";
 import { store } from "../stores/store";
 import {router} from "../../routes/Routes";
 import { Photo, Profile } from "../../models/profile";
+import { profile } from "console";
 
 const sleep = (delay: number)=> {
     return new Promise((resolve)=>{
@@ -97,7 +98,8 @@ const Profiles = {
         })
     },
     setMainPhoto: (id: string) => axios.post(`/photos/${id}/setMain`, {}),
-    deletePhoto: (id: string) => axios.delete(`/photos/${id}`)
+    deletePhoto: (id: string) => axios.delete(`/photos/${id}`),
+    updateProfile: (profile: Partial<Profile>) => axios.put(`/profiles`,profile)
 }
 
 
