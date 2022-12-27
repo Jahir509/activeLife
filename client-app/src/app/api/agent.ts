@@ -4,7 +4,7 @@ import { Activity, ActivityFormValues } from "../../models/activity";
 import { User, UserFormValues } from "../../models/user";
 import { store } from "../stores/store";
 import {router} from "../../routes/Routes";
-import { Profile } from "../../models/profile";
+import { Photo, Profile } from "../../models/profile";
 
 const sleep = (delay: number)=> {
     return new Promise((resolve)=>{
@@ -88,7 +88,16 @@ const Account = {
 }
 
 const Profiles = {
-    get: (username:string) => request.get<Profile>(`/prodile/${username}`)
+    get: (username:string) => request.get<Profile>(`/profiles/${username}`),
+    uploadPhoto: (file: any) => {
+        let formData = new FormData();
+        formData.append('File', file);
+        return axios.post<Photo>('photos', formData, {
+            headers: {'Content-Type': 'multipart/form-data'}
+        })
+    },
+    setMainPhoto: (id: string) => axios.post(`/photos/${id}/setMain`, {}),
+    deletePhoto: (id: string) => axios.delete(`/photos/${id}`)
 }
 
 

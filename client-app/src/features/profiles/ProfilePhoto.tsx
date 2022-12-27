@@ -1,32 +1,33 @@
 import { observer } from 'mobx-react-lite';
 import React, { SyntheticEvent, useState } from 'react'
-import { Tab,Grid,Button,Card, Header } from 'semantic-ui-react';
+import { Tab,Grid,Button,Card, Header,Image } from 'semantic-ui-react';
+import PhotoUploadWidget from '../../app/common/imageUpload/PhotoUploadWidget';
 import { useStore } from '../../app/stores/store';
+import { Photo, Profile } from '../../models/profile';
 
-// interface Props {
-//     profile: Profile
-// }
+interface Props {
+    profile: Profile
+}
 
 
-export default observer(function ProfilePhotos() {
-    // const { profileStore: { isCurrentUser, uploadPhoto, uploading,
-    //     setMainPhoto, loading, deletePhoto } } = useStore();
-    // const [addPhotoMode, setAddPhotoMode] = useState(false);
-    // const [target, setTarget] = useState('');
+export default observer(function ProfilePhotos({profile}:Props) {
+    const { profileStore: { isCurrentUser,uploadPhoto,uploading,setMainPhoto,loading,deletePhoto} } = useStore();
+    const [addPhotoMode, setAddPhotoMode] = useState(false);
+    const [target, setTarget] = useState('');
 
-    // function handlePhotoUpload(file: any) {
-    //     uploadPhoto(file).then(() => setAddPhotoMode(false));
-    // }
+    function handlePhotoUpload(file: any) {
+        uploadPhoto(file).then(() => setAddPhotoMode(false));
+    }
 
-    // function handleSetMain(photo: Photo, e: SyntheticEvent<HTMLButtonElement>) {
-    //     setTarget(e.currentTarget.name);
-    //     setMainPhoto(photo);
-    // }
+    function handleSetMain(photo: Photo, e: SyntheticEvent<HTMLButtonElement>) {
+        setTarget(e.currentTarget.name);
+        setMainPhoto(photo);
+    }
 
-    // function handleDeletePhoto(photo: Photo, e: SyntheticEvent<HTMLButtonElement>) {
-    //     setTarget(e.currentTarget.name);
-    //     deletePhoto(photo);
-    // }
+    function handleDeletePhoto(photo: Photo, e: SyntheticEvent<HTMLButtonElement>) {
+        setTarget(e.currentTarget.name);
+        deletePhoto(photo);
+    }
 
 
     return (
@@ -34,16 +35,16 @@ export default observer(function ProfilePhotos() {
             <Grid>
                 <Grid.Column width='16'>
                     <Header floated='left' icon='image' content='Photos' />
-                    {/* {isCurrentUser && ( */}
+                    {isCurrentUser && (
                         <Button floated='right' 
                             basic 
-                            // content={addPhotoMode ? 'Cancel' : 'Add' +' Photo'} 
-                            // onClick={() => setAddPhotoMode(!addPhotoMode)} 
+                            content={addPhotoMode ? 'Cancel' : 'Add' +' Photo'} 
+                            onClick={() => setAddPhotoMode(!addPhotoMode)} 
                         />
-                    {/* )} */}
+                     )}
                 </Grid.Column>
                 <Grid.Column width='16'>
-                    {/* {addPhotoMode ? (
+                    {addPhotoMode ? (
                         <PhotoUploadWidget uploadPhoto={handlePhotoUpload} loading={uploading} />
                     ) : (
                         <Card.Group itemsPerRow={5}>
@@ -71,11 +72,11 @@ export default observer(function ProfilePhotos() {
                                                 disabled={photo.isMain}
                                             />
                                         </Button.Group>
-                                    )}
+                                     )}
                                 </Card>
                             ))}
                         </Card.Group>
-                    )} */}
+                     )}
                 </Grid.Column>
             </Grid>
         </Tab.Pane>

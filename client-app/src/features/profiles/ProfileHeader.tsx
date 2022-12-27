@@ -17,13 +17,11 @@ export default observer(function ProfileHeader({profile}:Props) {
                             <Item.Image
                                 avatar
                                 size='small'
-                                // src={profile.image || '/assets/user.png'}
-                                src='/assets/user.jpg'
+                                src={profile.image || '/assets/user.jpg'}
                             />
                             <Item.Content verticalAlign='middle'>
                                 <Header as='h1' 
                                 content={profile.displayName}
-                                //content="ABCD"
                                 />
                             </Item.Content>
                         </Item>
