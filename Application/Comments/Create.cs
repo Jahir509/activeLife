@@ -43,7 +43,11 @@ namespace Application.Comments
             }
             public async Task<Result<CommentDto>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(request.ActivityId);
+                var activity = await _context.Activities
+                    .Include(x => x.Comments)
+                    .ThenInclude(x => x.Author)
+                    .ThenInclude(x => x.Photos)
+                    .FirstOrDefaultAsync(x => x.Id == request.ActivityId);
 
                 if(activity == null ) return null;
 
@@ -56,7 +60,7 @@ namespace Application.Comments
                     Activity = activity,
                     Body = request.Body
                 };
-
+                Console.WriteLine(comment);
                 activity.Comments.Add(comment);
 
                 var success = await _context.SaveChangesAsync() > 0;

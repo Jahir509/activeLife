@@ -1,4 +1,5 @@
 using Application.Activities;
+using Application.Comments;
 
 namespace Application.DTO
 {
@@ -14,5 +15,6 @@ namespace Application.DTO
         public string HostUserName { get; set; }
         public bool IsCancelled { get; set; }
         public ICollection<AttendeeDto> Attendees {get; set;}
+        public ICollection<CommentDto> Comments { get; set; }
     }
 }
