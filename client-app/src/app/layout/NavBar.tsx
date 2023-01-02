@@ -14,7 +14,7 @@ export default observer(
     return (
       <Menu inverted fixed='top'>
         <Container>
-            <Menu.Item as={NavLink} exact to='/' header>
+            <Menu.Item as={NavLink} exact="true" to='/' header>
                 <img src='/assets/logo.png' alt='logo' style={{marginRight:'10px'}}/>
                 activeLife
             </Menu.Item>
