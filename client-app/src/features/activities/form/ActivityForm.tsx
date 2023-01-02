@@ -52,12 +52,14 @@ export default observer (
         }
         createActivity(newActivity).then(()=>{
           // history.push(`/activities/${newActivity.id}`)
+            activityStore.loading = false;
             navigate(`/activities/${newActivity.id}`)
         })
 
       }else{
         updateActivity(activity).then(()=>{
           // history.push(`/activities/${activity.id}`)
+            activityStore.loading = false;
             navigate(`/activities/${activity.id}`)
         })
       }

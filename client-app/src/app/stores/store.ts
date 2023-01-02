@@ -1,5 +1,4 @@
 import { createContext, useContext } from "react";
-import { Profile } from "../../models/profile";
 import ActivityStore from "./activityStore";
 import CommentStore from "./commentStore";
 import CommonStore from "./commonStore";
