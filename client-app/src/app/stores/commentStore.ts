@@ -6,7 +6,8 @@ import { ChatComment } from "../../models/chatComment";
 import { store } from "./store";
 
 export default class CommentStore {
-    comments: ChatComment[] = [];
+    comments:ChatComment[]=[]
+    
     hubConnection: HubConnection | null = null;
 
     constructor() {
@@ -29,11 +30,19 @@ export default class CommentStore {
                 });
             
             this.hubConnection.on("LoadComments",(comments: ChatComment[]) => {
-                runInAction(()=> this.comments = comments);
+                runInAction(()=> {
+                    console.log("I am loadComments")
+                    console.log(comments)
+                    this.comments = comments
+                    console.log(this.comments)
+                });
             });
 
             this.hubConnection.on("RecieveComment",(comment:ChatComment)=>{
-                runInAction(()=> this.comments.push(comment));
+                runInAction(()=> {
+                    console.log("I am RecieveComment")
+                    this.comments.push(comment)
+                });
             })
         }
     }

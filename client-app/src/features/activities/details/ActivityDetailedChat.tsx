@@ -41,7 +41,7 @@ export default observer(function ActivityDetailedChat({activityId} :Props) {
                             <Comment>
                                 <Comment.Avatar src={comment.image || '/assets/user.jpg'}/>
                                 <Comment.Content>
-                                    <Comment.Author as={Link} to={`/profiles/${comment.userName}`}>{comment.displayName}</Comment.Author>
+                                    <Comment.Author as={Link} to={`/profiles/${comment.username}`}>{comment.displayname}</Comment.Author>
                                     <Comment.Metadata>
                                         <div>{comment.createdAt}</div>
                                     </Comment.Metadata>
