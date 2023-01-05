@@ -4,6 +4,7 @@ import { Activity, ActivityFormValues } from "../../models/activity";
 import { format } from "date-fns";
 import { store } from "./store";
 import { Profile } from "../../models/profile";
+import { Pagination, PagingParams } from "../../models/pagination";
 
 export default class ActivityStore {
     activityRegistry = new Map<string, Activity>();
@@ -12,6 +13,8 @@ export default class ActivityStore {
     editMode = false;
     loading = false;
     loadingInitial = false;
+    pagination: Pagination | null = null;
+    pagingParams = new PagingParams();
 
     constructor() {
         makeAutoObservable(this)
@@ -36,16 +39,35 @@ export default class ActivityStore {
         )
     }
 
+
+    setPagingParam = (pagingParams: PagingParams)=> {
+        this.pagingParams = pagingParams;
+    }
+
+    get axiosParam() {
+        const params = new URLSearchParams();
+        params.append('pageNumber',this.pagingParams.pageNumber.toString());
+        params.append('pageSize',this.pagingParams.pageSize.toString());
+        return params;
+    }
+
+    // seting pagination comes from response header
+    setPagination = (pagination: Pagination)=>{
+        this.pagination = pagination
+    }
+
     loadActivities = async () => {
         this.loadingInitial = true
         try {
-            const activities = await agent.Activities.list();
-            activities.forEach(activity => {
+            const result = await agent.Activities.list(this.axiosParam);
+            result.data!.forEach(activity => {
                 this.setActivity(activity)
                 // activity.date = activity.date.split('T')[0];
                 // this.activityRegistry.set(activity.id, activity);
                 // this.activities.push(activity)
             })
+
+            this.setPagination(result.pagination!);
             this.setLoadingInitial(false);
         } catch (error) {
             console.log(error);
@@ -230,6 +252,8 @@ export default class ActivityStore {
                 })
             })
         }
+
+      
     }
 
     
