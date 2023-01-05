@@ -13,5 +13,10 @@ namespace Application.Profiles
         public string UserName { get; set; }
         public string Bio { get; set; }
         public ICollection<Photo> Photos { get; set; }
+
+        // For Following Followers Information
+        public bool Following { get; set; }
+        public int FollowersCount { get; set; }
+        public int FollowingCount { get; set; }
     }
 }

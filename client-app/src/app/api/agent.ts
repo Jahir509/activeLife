@@ -5,7 +5,7 @@ import { User, UserFormValues } from "../../models/user";
 import { store } from "../stores/store";
 import {router} from "../../routes/Routes";
 import { Photo, Profile } from "../../models/profile";
-import { profile } from "console";
+
 
 const sleep = (delay: number)=> {
     return new Promise((resolve)=>{
@@ -97,9 +97,12 @@ const Profiles = {
             headers: {'Content-Type': 'multipart/form-data'}
         })
     },
-    setMainPhoto: (id: string) => axios.post(`/photos/${id}/setMain`, {}),
-    deletePhoto: (id: string) => axios.delete(`/photos/${id}`),
-    updateProfile: (profile: Partial<Profile>) => axios.put(`/profiles`,profile)
+    setMainPhoto: (id: string) => request.post(`/photos/${id}/setMain`, {}),
+    deletePhoto: (id: string) => request.del(`/photos/${id}`),
+    updateProfile: (profile: Partial<Profile>) => request.put(`/profiles`,profile),
+    updateFollowing: (username:string)=> request.post(`/follow/${username}`,{}),
+    listFollowings: (username:string,predicate:string)=> request.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
+
 }
 
 
