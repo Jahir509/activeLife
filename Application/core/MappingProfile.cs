@@ -19,28 +19,32 @@ namespace Application.core
             string currentUsername = null;
 
             //CreateMap< {from}, {to} >()
-            CreateMap<Activity,Activity>();
+            //CreateMap<Activity,Activity>();
 
             CreateMap<Activity,ActivityDto>()
-                .ForMember(d=>d.HostUserName,o=> o.MapFrom(s=>s.Attendees
+                .ForMember(destination=> destination.HostUserName,o=> o.MapFrom(source=> source.Attendees
                     .FirstOrDefault(x=> x.IsHost).AppUser.UserName));
 
+            CreateMap<Activity,ProfileShowActivityDto>()
+                .ForMember(destination=> destination.HostUserName,o=> o.MapFrom(source=> source.Attendees
+                    .FirstOrDefault(user=> user.IsHost).AppUser.UserName));
+
             CreateMap<ActivityAttendee,AttendeeDto>()
-                .ForMember(d=>d.DisplayName,o=>o.MapFrom(s=>s.AppUser.DisplayName))
-                .ForMember(d=>d.UserName,o=>o.MapFrom(s=>s.AppUser.UserName))
-                .ForMember(d=>d.Bio,o=>o.MapFrom(s=>s.AppUser.Bio))
-                .ForMember(d=>d.Image,o=>o.MapFrom(s=> s.AppUser.Photos.FirstOrDefault(x=>x.IsMain).Url))
-                .ForMember(d=> d.FollowersCount,o=> o.MapFrom(s=> s.AppUser.Followers.Count))
-                .ForMember(d=> d.FollowingCount,o=> o.MapFrom(s=> s.AppUser.Followings.Count))
-                .ForMember(d=> d.Following,
-                        o=> o.MapFrom(s=> s.AppUser.Followers.Any(x=>x.Observer.UserName == currentUsername)));
+                .ForMember(destination=> destination.DisplayName,o=>o.MapFrom(source=> source.AppUser.DisplayName))
+                .ForMember(destination=> destination.UserName,o=>o.MapFrom(source=> source.AppUser.UserName))
+                .ForMember(destination=> destination.Bio,o=>o.MapFrom(source=> source.AppUser.Bio))
+                .ForMember(destination=> destination.Image,o=>o.MapFrom(source=> source.AppUser.Photos.FirstOrDefault(x=>x.IsMain).Url))
+                .ForMember(destination=> destination.FollowersCount,o=> o.MapFrom(source=> source.AppUser.Followers.Count))
+                .ForMember(destination=> destination.FollowingCount,o=> o.MapFrom(source=> source.AppUser.Followings.Count))
+                .ForMember(destination=> destination.Following,
+                        o=> o.MapFrom(source=> source.AppUser.Followers.Any(x=>x.Observer.UserName == currentUsername)));
 
             CreateMap<AppUser,Profiles.Profile>()
-                .ForMember(d=>d.Image,o=>o.MapFrom(s=> s.Photos.FirstOrDefault(x=>x.IsMain).Url))
-                .ForMember(d=> d.FollowersCount,o=> o.MapFrom(s=> s.Followers.Count))
-                .ForMember(d=> d.FollowingCount,o=> o.MapFrom(s=> s.Followings.Count))
-                .ForMember(d=> d.Following,
-                        o=> o.MapFrom(s=> s.Followers.Any(x=>x.Observer.UserName == currentUsername)));
+                .ForMember(destination=> destination.Image,o=>o.MapFrom(source=> source.Photos.FirstOrDefault(x=>x.IsMain).Url))
+                .ForMember(destination=> destination.FollowersCount,o=> o.MapFrom(source=> source.Followers.Count))
+                .ForMember(destination=> destination.FollowingCount,o=> o.MapFrom(source=> source.Followings.Count))
+                .ForMember(destination=> destination.Following,
+                        o=> o.MapFrom(source=> source.Followers.Any(x=>x.Observer.UserName == currentUsername)));
 
             CreateMap<Comment, CommentDto>()
                 .ForMember(d => d.Username, o => o.MapFrom(s => s.Author.UserName))
