@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Activities;
 using Application.Comments;
 using Application.DTO;
@@ -25,9 +21,17 @@ namespace Application.core
                 .ForMember(destination=> destination.HostUserName,o=> o.MapFrom(source=> source.Attendees
                     .FirstOrDefault(x=> x.IsHost).AppUser.UserName));
 
-            CreateMap<Activity,ProfileShowActivityDto>()
-                .ForMember(destination=> destination.HostUserName,o=> o.MapFrom(source=> source.Attendees
-                    .FirstOrDefault(user=> user.IsHost).AppUser.UserName));
+           CreateMap<ActivityAttendee, Profiles.ProfileShowActivityDto>()
+                .ForMember(destination => destination.Id, o => o.MapFrom(source => source.Activity.Id))
+                .ForMember(destination => destination.Date, o => o.MapFrom(source => source.Activity.Date))
+                .ForMember(destination => destination.Title, o => o.MapFrom(source => source.Activity.Title))
+                .ForMember(destination => destination.Category, o => o.MapFrom(s =>
+                    s.Activity.Category))
+                .ForMember(destination => destination.HostUserName, o => o.MapFrom(s =>
+                    s.Activity.Attendees.FirstOrDefault(x =>
+                    x.IsHost).AppUser.UserName));
+                
+
 
             CreateMap<ActivityAttendee,AttendeeDto>()
                 .ForMember(destination=> destination.DisplayName,o=>o.MapFrom(source=> source.AppUser.DisplayName))
@@ -47,9 +51,9 @@ namespace Application.core
                         o=> o.MapFrom(source=> source.Followers.Any(x=>x.Observer.UserName == currentUsername)));
 
             CreateMap<Comment, CommentDto>()
-                .ForMember(d => d.Username, o => o.MapFrom(s => s.Author.UserName))
-                .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName))
-                .ForMember(d => d.Image, o => o.MapFrom(s => s.Author.Photos.FirstOrDefault(x => x.IsMain).Url));    
+                .ForMember(destination => destination.Username, o => o.MapFrom(source => source.Author.UserName))
+                .ForMember(destination => destination.DisplayName, o => o.MapFrom(source => source.Author.DisplayName))
+                .ForMember(destination => destination.Image, o => o.MapFrom(source => source.Author.Photos.FirstOrDefault(x => x.IsMain).Url));    
         }
     }
 }

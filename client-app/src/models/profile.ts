@@ -1,5 +1,13 @@
 import { User } from "./user";
 
+export interface UserActivity {
+    id: string;
+    title: string;
+    category: string;
+    date: Date;
+   }
+
+
 export interface Profile {
     userName: string;
     displayName: string;
