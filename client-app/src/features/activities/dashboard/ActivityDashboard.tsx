@@ -7,6 +7,7 @@ import { useStore } from '../../../app/stores/store';
 import { PagingParams } from '../../../models/pagination';
 import ActivityFilter from './ActivityFilter';
 import ActivityList from './ActivityList';
+import ActivityListItemPlaceholder from './ActivityListItemPlaceholder';
 
 
 
@@ -27,19 +28,28 @@ export default observer (
             if(activityRegistry.size <= 1 ) loadActivities();
         },[activityRegistry.size,loadActivities])
 
-        if(loadingInitial && !loadingNext) return <LoadingComponent inverted={true} content={'Loading Activities ...'} />
 
         return (
             <Grid>
                 <Grid.Column width="10">
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={handleGetNext}
-                        hasMore={!loadingNext && !!pagination && pagination.currentPage < pagination.totalPages}
-                        initialLoad={false}
-                    >
-                        <ActivityList />
-                    </InfiniteScroll>
+                    {activityStore.loadingInitial && !loadingNext ? (
+                        <>
+                            <ActivityListItemPlaceholder />
+                            <ActivityListItemPlaceholder />
+                        </>
+                    ) : (
+                        <>
+                            <InfiniteScroll
+                                pageStart={0}
+                                loadMore={handleGetNext}
+                                hasMore={!loadingNext && !!pagination && pagination.currentPage < pagination.totalPages}
+                                initialLoad={false}
+                             >
+                                <ActivityList />
+                            </InfiniteScroll>
+                        </>
+                    )}
+                    
                 </Grid.Column>
 
                 <Grid.Column width="6">
