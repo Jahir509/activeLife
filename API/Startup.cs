@@ -51,6 +51,10 @@ namespace API
 
             //app.UseHttpsRedirection();
 
+            // This two middleware use to serve default static files in kestrel server
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            
             app.UseRouting();
 
             app.UseCors("CorsPolicy"); 
@@ -59,10 +63,13 @@ namespace API
 
             app.UseAuthorization();
 
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapFallbackToController("Index","FallBack");
             });
         }
     }
