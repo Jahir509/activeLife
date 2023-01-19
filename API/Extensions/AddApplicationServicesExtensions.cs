@@ -20,7 +20,8 @@ namespace API.Extensions
             });
 
             services.AddDbContext<DataContext>(option=>{
-                option.UseSqlite(_config.GetConnectionString("DefaultConnection"));
+                // option.UseSqlite(_config.GetConnectionString("DefaultConnection"));
+                option.UseNpgsql(_config.GetConnectionString("DefaultConnection"));
             });
 
             services.AddCors(option=>{
