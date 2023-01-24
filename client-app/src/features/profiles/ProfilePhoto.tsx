@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import React, { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useState } from 'react'
 import { Tab,Grid,Button,Card, Header,Image } from 'semantic-ui-react';
 import PhotoUploadWidget from '../../app/common/imageUpload/PhotoUploadWidget';
 import { useStore } from '../../app/stores/store';
@@ -38,7 +38,7 @@ export default observer(function ProfilePhotos({profile}:Props) {
                     {isCurrentUser && (
                         <Button floated='right' 
                             basic 
-                            content={addPhotoMode ? 'Cancel' : 'Add' +' Photo'} 
+                            content={addPhotoMode ? "Cancel" : `AddPhoto`} 
                             onClick={() => setAddPhotoMode(!addPhotoMode)} 
                         />
                      )}

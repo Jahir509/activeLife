@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { Button, Grid, Loader } from 'semantic-ui-react';
-import LoadingComponent from '../../../app/layout/LoadingComponent';
+import {  Grid, Loader } from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
 import { PagingParams } from '../../../models/pagination';
 import ActivityFilter from './ActivityFilter';
@@ -15,7 +14,7 @@ export default observer (
     function ActivityDashboard(){
 
         const {activityStore} = useStore();
-        const {loadingInitial,activityRegistry,loadActivities, setPagingParam, pagination} = activityStore
+        const {activityRegistry,loadActivities, setPagingParam, pagination} = activityStore
         const [loadingNext,setLoadingNext] = useState(false);
 
         function handleGetNext(){
