@@ -10,8 +10,8 @@ processes = []
 
 [env]
   ASPNETCORE_URLS="http://+:8080"
-  Cloudinary_CloudName="jahir509"
-  Cloudinary_ApiKey="156955978444694"
+  Cloudinary__CloudName="jahir509"
+  Cloudinary__ApiKey="156955978444694"
 
 [experimental]
   auto_rollback = true
