@@ -1,4 +1,4 @@
-# fly.toml file generated for activelife on 2023-01-23T17:31:32+06:00
+# fly.toml file generated for activelife on 2023-01-24T15:22:50+06:00
 
 app = "activelife"
 kill_signal = "SIGINT"
