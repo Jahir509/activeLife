@@ -1,6 +1,6 @@
-# fly.toml file generated for activelife on 2023-01-24T15:22:50+06:00
+# fly.toml file generated for activelife-new on 2023-01-24T16:24:11+06:00
 
-app = "activelife"
+app = "activelife-new"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
